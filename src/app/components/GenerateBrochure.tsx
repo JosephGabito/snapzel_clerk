@@ -1,99 +1,71 @@
-"use client";
+'use client'
 
-import { useState, useEffect } from "react";
-import { Paperclip, LoaderCircle, CheckCircle } from "lucide-react";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function GenerateBrochure() {
-    const [url, setUrl] = useState("");
-    const [taskId, setTaskId] = useState("");
-    const [status, setStatus] = useState("");
-    const [result, setResult] = useState("");
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setTaskId("");
-        setStatus("Submitting...");
-        setResult("");
-
-        const res = await fetch("https://your-fastapi-api.com/generate", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url }),
-        });
-
-        const data = await res.json();
-        setTaskId(data.task_id);
-        setStatus("Pending...");
-    };
-
-    useEffect(() => {
-        if (!taskId) return;
-
-        const interval = setInterval(async () => {
-            const res = await fetch(`https://your-fastapi-api.com/status/${taskId}`);
-            const data = await res.json();
-
-            setStatus(data.state);
-            if (data.state === "SUCCESS") {
-                setResult(data.result);
-                clearInterval(interval);
-            }
-        }, 2000);
-
-        return () => clearInterval(interval);
-    }, [taskId]);
+    const [loading, setLoading] = useState(false);
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-zinc-100 px-4">
-            <div className="w-full max-w-md bg-white border border-zinc-200 shadow-sm rounded-2xl p-6 space-y-6">
-                <div className="flex items-center gap-2 text-xl font-semibold text-zinc-900">
-                    <Paperclip className="w-5 h-5" />
-                    Snapzel Brochure Generator
-                </div>
+        <main>
+            <SignedOut>
+                <div
+                    className="relative w-full flex-1 overflow-hidden bg-black flex items-center justify-center"
+                    style={{ height: "100vh", backgroundImage: "url('/images/snapzel-bg.png')", backgroundRepeat: "repeat" }}
+                >
+                    {/* Backdrop */}
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-medium text-zinc-700 mb-1">
-                            Enter a URL:
-                        </label>
-                        <input
-                            type="url"
-                            required
-                            value={url}
-                            onChange={(e) => setUrl(e.target.value)}
-                            placeholder="https://example.com"
-                            className="w-full px-4 py-2 border border-zinc-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black"
-                        />
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="w-full bg-black text-white py-2 rounded-md text-sm font-medium hover:bg-zinc-800 transition"
+                    {/* Content */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                        className="relative z-10 flex items-center justify-center px-4"
                     >
-                        Generate Brochure
-                    </button>
-                </form>
 
-                {taskId && (
-                    <div className="mt-4 text-sm text-zinc-800 space-y-2">
-                        <div className="flex items-center gap-2">
-                            <span className="font-medium">Status:</span>
-                            {status === "SUCCESS" ? (
-                                <CheckCircle className="w-4 h-4 text-green-500" />
-                            ) : status.includes("Pending") || status === "Submitting..." ? (
-                                <LoaderCircle className="w-4 h-4 animate-spin text-zinc-500" />
-                            ) : null}
-                            <span>{status}</span>
-                        </div>
+                        <Card className="w-full max-w-md rounded-2xl text-center shadow-xl border border-zinc-800 bg-white/90 backdrop-blur-md">
+                            <CardContent className="py-10 px-6 text-center space-y-4">
+                                <div className="space-y-2">
+                                    <div className="text-center">
+                                        <p className="text-3xl font-semibold text-zinc-900 leading-snug">
+                                            <span className="mr-1">🐤</span>
+                                            Snapzel turns links into<br />
+                                            stunning brochures —
+                                        </p>
+                                        <p className="mt-2 text-base text-zinc-500">
+                                            just like that.
+                                        </p>
+                                    </div>
+                                </div>
 
-                        {result && (
-                            <div className="bg-green-100 text-green-800 p-3 rounded-md text-sm">
-                                {result}
-                            </div>
-                        )}
-                    </div>
-                )}
-            </div>
-        </div>
+                                <SignInButton mode="modal">
+                                    <Button
+                                        onClick={() => setLoading(true)}
+                                        disabled={loading}
+                                        className="relative mt-4 w-40 h-[30px] px-4 text-sm font-medium rounded-md border border-[#2f3037] shadow-[0_0_0_1px_#2f3037,0_1px_1px_rgba(255,255,255,0.07)_inset,0_2px_3px_rgba(34,42,53,0.2),0_1px_1px_rgba(0,0,0,0.24)] bg-zinc-900 text-white transition hover:brightness-110"
+                                    >
+                                        {loading ? (
+                                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto" />
+                                        ) : (
+                                            <>
+                                                Continue <span className="ml-1 text-zinc-400">→</span>
+                                            </>
+                                        )}
+                                    </Button>
+                                </SignInButton>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+                </div>
+            </SignedOut>
+
+            <SignedIn>
+                <h1 className="text-white text-xl">Signed in! 🎉</h1>
+            </SignedIn>
+        </main>
     );
 }

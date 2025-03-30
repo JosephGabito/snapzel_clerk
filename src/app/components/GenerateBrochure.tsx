@@ -1,11 +1,10 @@
 'use client'
 
-import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useAuth } from "@clerk/nextjs";
 import SnapForm from "./SnapForm";
 
 export default function GenerateBrochure() {

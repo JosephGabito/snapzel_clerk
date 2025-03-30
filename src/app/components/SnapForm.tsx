@@ -15,7 +15,7 @@ export default function SnapForm() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(process.env);
+        console.log('Generating...')
         if (!url.trim()) return;
 
         try {

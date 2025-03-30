@@ -5,11 +5,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useAuth } from "@clerk/nextjs";
+import SnapForm from "./SnapForm";
 
 export default function GenerateBrochure() {
     const [loading, setLoading] = useState(false);
-    const { user } = useUser(); // ✅ Move this to top level
-
     return (
         <main>
             <SignedOut>
@@ -69,26 +69,10 @@ export default function GenerateBrochure() {
             </SignedOut>
 
             <SignedIn>
-                <div className="relative w-full min-h-screen flex items-center justify-center bg-white text-zinc-900">
-                    <div className="absolute top-4 right-4">
-                        <UserButton afterSignOutUrl="/" />
-                    </div>
-
-                    <div className="text-center space-y-4">
-                        <h1 className="text-2xl font-semibold">
-                            🎉 You’re signed in and ready to Snap 🐤
-                        </h1>
-                        <p className="text-sm text-zinc-600">
-                            Welcome back, {user?.firstName || user?.emailAddresses?.[0]?.emailAddress}
-                        </p>
-                        <button
-                            className="inline-block px-5 py-2 rounded-md bg-black text-white hover:brightness-110 transition"
-                            onClick={() => console.log("Go to dashboard or next action")}
-                        >
-                            Go to Dashboard
-                        </button>
-                    </div>
+                <div className="absolute top-4 right-4">
+                    <UserButton afterSignOutUrl="/" />
                 </div>
+                <SnapForm />
             </SignedIn>
         </main>
     );

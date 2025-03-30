@@ -44,7 +44,13 @@ export default function GenerateBrochure() {
 
                                 <SignInButton mode="modal">
                                     <Button
-                                        onClick={() => setLoading(true)}
+                                        onClick={() => {
+                                            setLoading(true);
+                                            // Fallback: reset loading after X seconds
+                                            setTimeout(() => {
+                                                setLoading(false);
+                                            }, 1000); // adjust as needed
+                                        }}
                                         disabled={loading}
                                         className="relative mt-4 w-40 h-[30px] px-4 text-sm font-medium rounded-md border border-[#2f3037] shadow-[0_0_0_1px_#2f3037,0_1px_1px_rgba(255,255,255,0.07)_inset,0_2px_3px_rgba(34,42,53,0.2),0_1px_1px_rgba(0,0,0,0.24)] bg-zinc-900 text-white transition hover:brightness-110"
                                     >
@@ -66,6 +72,6 @@ export default function GenerateBrochure() {
             <SignedIn>
                 <h1 className="text-white text-xl">Signed in! 🎉</h1>
             </SignedIn>
-        </main>
+        </main >
     );
 }

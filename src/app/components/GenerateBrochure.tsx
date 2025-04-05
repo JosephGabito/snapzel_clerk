@@ -68,9 +68,6 @@ export default function GenerateBrochure() {
             </SignedOut>
 
             <SignedIn>
-                <div className="absolute top-4 right-4">
-                    <UserButton afterSignOutUrl="/" />
-                </div>
                 <SnapForm />
             </SignedIn>
         </main>

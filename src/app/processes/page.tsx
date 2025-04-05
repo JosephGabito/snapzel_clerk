@@ -14,8 +14,17 @@ import {
 import { motion, AnimatePresence } from "framer-motion"
 import toast from "react-hot-toast"
 
+// Define Task type
+interface Task {
+    _id: string
+    task_id: string
+    url: string
+    status: "done" | "failed" | "in-progress" | "pending"
+    date_added: number
+}
+
 export default function ProcessesPage() {
-    const [tasks, setTasks] = useState<any[]>([])
+    const [tasks, setTasks] = useState<Task[]>([])
     const [loading, setLoading] = useState(true)
     const [now, setNow] = useState<number>(Date.now())
     const [openMenu, setOpenMenu] = useState<string | null>(null)
@@ -45,7 +54,7 @@ export default function ProcessesPage() {
 
         const interval = setInterval(() => setNow(Date.now()), 1000)
         return () => clearInterval(interval)
-    }, [])
+    }, [getToken])
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -122,7 +131,6 @@ export default function ProcessesPage() {
                             transition={{ duration: 0.2 }}
                             className="w-full bg-white border border-gray-200 rounded shadow-sm p-6 transition relative"
                         >
-                            {/* Top row: title + status + menu */}
                             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                                 <div className="flex items-center gap-3">
                                     <div className="h-2 w-2 rounded bg-blue-400" />
@@ -185,10 +193,8 @@ export default function ProcessesPage() {
                                 </div>
                             </div>
 
-                            {/* Metadata row */}
                             <div className="mt-4 text-sm text-gray-500 flex flex-wrap gap-x-6 gap-y-2">
                                 <div className="flex" style={{ width: "100%", justifyContent: "space-between" }}>
-
                                     <div className="flex items-center gap-1">
                                         <span className="font-medium text-gray-600">Task ID:</span>
                                         <button
@@ -201,15 +207,11 @@ export default function ProcessesPage() {
                                     <div>
                                         {showTimer && <div>{formatTimeAgo(task.date_added, showTimer)}</div>}
                                     </div>
-
                                 </div>
-
                             </div>
 
-                            {/* Separator */}
                             <div className="border-t border-gray-100 my-4" />
 
-                            {/* Action buttons */}
                             <div className="flex flex-wrap gap-3">
                                 {["View PDF", "Open JSON", "Generate Again"].map((label) => (
                                     <button

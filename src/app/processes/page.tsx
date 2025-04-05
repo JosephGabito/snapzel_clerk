@@ -101,7 +101,7 @@ export default function ProcessesPage() {
     }
 
     const handleAction = (action: string, taskId: string) => {
-        toast.success(`${action} triggered for task`)
+        toast.success(`${action} triggered for task ${taskId}`)
         setOpenMenu(null)
     }
 

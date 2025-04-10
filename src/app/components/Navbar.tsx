@@ -37,7 +37,7 @@ export default function NavBar() {
                                     : "text-gray-600 hover:text-black"
                             )}
                         >
-                            Processes
+                            My Brochures
                         </Link>
                     </div>
                 </div>

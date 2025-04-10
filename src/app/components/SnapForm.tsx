@@ -9,7 +9,7 @@ export default function SnapForm() {
     const { user } = useUser();
     const { getToken } = useAuth();
 
-    const [url, setUrl] = useState("");
+    const [url, setUrl] = useState("https://");
     const [loading, setLoading] = useState(false);
     const [feedback, setFeedback] = useState("");
 

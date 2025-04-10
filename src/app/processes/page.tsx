@@ -13,6 +13,7 @@ import {
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import toast from "react-hot-toast"
+import TaskLinks from "../components/TaskLinks"
 
 // Define Task type
 interface Task {
@@ -213,15 +214,13 @@ export default function ProcessesPage() {
                             <div className="border-t border-gray-100 my-4" />
 
                             <div className="flex flex-wrap gap-3">
-                                {["View PDF", "Open JSON", "Generate Again"].map((label) => (
-                                    <button
-                                        key={label}
-                                        className="px-3 py-1 text-sm rounded-md border border-gray-200 text-gray-700 hover:bg-gray-50 hover:shadow-sm transition"
-                                    >
-                                        {label}
-                                    </button>
-                                ))}
+                                {task.status === "done" && (
+                                    <>
+                                        <TaskLinks task={task} />
+                                    </>
+                                )}
                             </div>
+
                         </motion.div>
                     )
                 })}

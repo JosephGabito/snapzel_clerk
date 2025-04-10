@@ -2,7 +2,12 @@
 
 import { useAuth } from "@clerk/nextjs";
 
-export default function TaskLinks({ task }) {
+type Task = {
+    task_id: string;
+    status: string;
+};
+
+export default function TaskLinks({ task }: { task: Task }) {
     const { getToken } = useAuth();
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -10,7 +15,7 @@ export default function TaskLinks({ task }) {
         console.error("Missing NEXT_PUBLIC_API_URL environment variable");
     }
 
-    const downloadFile = async (endpoint, filename) => {
+    const downloadFile = async (endpoint: string, filename: string) => {
         try {
             const token = await getToken({ template: "Snapzel" });
             if (!token) throw new Error("Token not found");
@@ -42,12 +47,12 @@ export default function TaskLinks({ task }) {
         }
     };
 
-    const handleDownloadReadme = (e) => {
+    const handleDownloadReadme = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         downloadFile("/download-readme", `readme-${task.task_id}.md`);
     };
 
-    const handleViewLanding = (e) => {
+    const handleViewLanding = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         downloadFile("/download-landing-page", `landing-${task.task_id}.html`);
     };
